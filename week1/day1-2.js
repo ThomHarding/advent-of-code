@@ -26,7 +26,6 @@ let score = 0;
 
 
 for (let i = 0; i < matches[0].length; i++) {
-    console.log('da match', matches[0][i])
     if (matches[0][i][2] === 'X') { //lose
         score += 0;
         if (matches[0][i][0] === 'A') { //rock
@@ -68,6 +67,6 @@ for (let i = 0; i < matches[0].length; i++) {
     }
 }
 //matches.sort(function(a, b){return b-a}); descending sort
-console.log(score);
+// console.log(score);
 // console.log(Math.max(...matches));
 // console.log('da answer', (matches[0]+matches[1]+matches[2]))
