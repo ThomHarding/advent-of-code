@@ -53,7 +53,21 @@ function findCommonChars(strings) {
 for (let i = 0; i < rucksacks.length; i++) {
     //step one: find the item
     let commonCharacter = findCommonChars(rucksacks[i]);
+    //step two: add item priority to total
     prioritySum += getPriorityOfLetter(commonCharacter);
 }
 
+let badges = [];
+for(let i = 0; i < file.length; i+=3) {
+    let badge = findCommonChars([file[i], file[i+1], file[i+2]]);
+    //much like part 1, but find common of three lines instead of two halves of one line
+    badges.push(badge);
+}
+
+let badgeSum = 0;
+for (let i = 0; i < badges.length; i++) {
+    badgeSum += getPriorityOfLetter(badges[i]);
+}
+
 console.log('part 1 answer', prioritySum);
+console.log('part 2 answer', badgeSum);
