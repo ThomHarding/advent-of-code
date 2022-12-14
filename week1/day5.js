@@ -55,19 +55,20 @@ function createStack() { //creates the initial state of the stack representing t
 function part2Movements(stack) {
     //basically: part 1 movement but multiple things stored in temp at once
     //still shift to stack crates in reverse, but use .reverse to pretend they're moved in order
-    for (i = 0; i < file.length; i++) { // get top crate from each row
-        let details = file[i].split(" ");
+    file.forEach(line => {
+      if (line[0] == "m") { // example: move 1 from 4 to 1
+        let details = line.split(" ");
         let quantity = details[1]; // how many crates to move
         let from = details[3]; // from where
         let to = details[5]; // to where
-        for (j = 0; j < quantity; j++) {
+        for (i = 0; i < quantity; i++) {
             // console.log(stack[from-1])
             crate = stack[from-1].shift() // remove from top of current row
             if (crate !== "" || crate !== undefined) {
                 crane += crate // add crates to crane
                 crate = "" // reset
             }
-            if (j == quantity -1) { // when full, add crane to stack
+            if (i == quantity -1) { // when full, add crane to stack
                 crane = crane.split("").reverse().join("") // reverse order of crane before adding to new stack
                 crane.split("").forEach(crate => {
                     stack[to-1].unshift(crate) // add to top of new row
@@ -75,10 +76,6 @@ function part2Movements(stack) {
                 crane = "" // reset
             }
         }
-    }
-    file.forEach(line => {
-      if (line[0] == "m") { // example: move 1 from 4 to 1
-        
         }
     })
     for (i = 0; i < stack.length; i++) { // get top crate from each row
