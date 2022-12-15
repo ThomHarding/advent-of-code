@@ -95,3 +95,82 @@ for (let i = 1; i < data.length - 1; i++) { //each row. starting at 1 because we
     }
 }
 console.log('total visible: ', visible);
+
+
+function checkScore(x,y) {
+    let result = 0;
+    let value = Number(data[y][x]);
+    //check left
+    let checker = x - 1; //the x coordinate of the spot to the left we're comparing height to
+    let distance = 1;
+    while (checker >= 0) {
+        if (Number(data[y][checker]) >= value) {
+            //if it's taller, there's no point going any further, it's not visible left
+            break;
+        } else {
+            if (checker == 0) { //if we're at index 0 we can also just stop and move downwards
+                break;
+            } // else we have a bit more to check so we look one space further to the left
+            checker--;
+            distance++;
+        }
+    }
+    result = distance;
+    distance = 1;
+    //check right
+    checker = x + 1;
+    while (checker <= data.length - 1) {
+        if (Number(data[y][checker]) >= value) {
+            break;
+        } else {
+            if (checker == data.length - 1) {
+                break;
+            }
+            distance++;
+            checker++;
+        }
+    }
+    result *= distance;
+    distance = 1;
+    //check up
+    checker = y - 1;
+    while (checker >= 0) {
+        if (Number(data[checker][x]) >= value) {
+            break;
+        } else {
+            if (checker == 0) {
+                break;
+            }
+            distance++;
+            checker--;
+        }
+    }
+    result *= distance;
+    distance = 1;
+    //check down
+    checker = y + 1;
+    while (checker <= data.length - 1) {
+        if (Number(data[checker][x]) >= value) {
+            break;
+        } else {
+            if (checker == data.length - 1) {
+                break;
+            }
+            distance++;
+            checker++;
+        }
+    }
+    result *= distance;
+    return result;
+}
+
+let maxScore = 0;
+for (let i = 1; i < data.length - 1; i++) { //if it's on the edge, its score that way is 0, so we don't even look at those
+    for (let j = 1; j < data[i].length - 1; j++) { //each column in that row
+        let score = checkScore(i,j);
+        if (score > maxScore) {
+            maxScore = score;
+        }
+    }
+}
+console.log('max view score: ', maxScore);
