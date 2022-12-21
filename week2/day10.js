@@ -1,4 +1,6 @@
+const { match } = require('assert');
 const {readFileSync, promises: fsPromises} = require('fs');
+const { type } = require('os');
 
 function syncReadFile(filename) {
   const contents = readFileSync(filename, 'utf-8');
@@ -13,11 +15,23 @@ let x = 1;
 let strength = 0;
 let totalStrength = 0;
 
+let screen = [];
+
+for (let j = 0; j < 6; j++) {
+    let row = [];
+    for (let i = 0; i < 40; i++) {
+        row.push(' ')
+    }
+    screen.push(row);
+}
+//screen is a 40x6 of empty pixels
+
 function addCycle() {
+    if (Math.abs(x - ((cycle - 1) % 40)) <= 1) {
+        screen[Math.ceil(cycle/40) - 1][((cycle - 1) % 40)] = '█';
+    }
     setSignalStrength();
     if ((cycle === 20) || (cycle === 60) || (cycle === 100) || (cycle === 140) || (cycle === 180) || (cycle === 220)) {
-        // console.log('x at ', cycle, ' = ',x)
-        // console.log('signal strength at ', cycle, ' = ',strength);
         totalStrength += strength;
     }
     cycle++;
@@ -44,4 +58,7 @@ for (let i = 0; i < file.length; i++) {
         addX(Number(file[i].substring(5, file[i].length)))
     }
 }
+
 console.log('total: '+totalStrength)
+let readout = screen.join('\n').replaceAll(',', '');
+console.log(readout);
