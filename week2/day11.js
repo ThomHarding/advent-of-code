@@ -24,43 +24,32 @@ for (let i = 0; i < file.length; i+=7) {
     newMonkey.itemsInspected =  0,
 
     monkeys.push(newMonkey)
-    console.log(newMonkey)
+    // console.log(newMonkey)
 }
 
 function operate(operation, item) {
-    // console.log('operation being done', operation.replace(/old/g, item), operation, item)
    return eval(operation.replace(/old/g, item))
 }
 
-function inspectItem(monkey, itemIndex) {
-    let item = monkey.items[itemIndex];
-    console.log('item?', item)
-    item = operate(monkey.operation, item);
-    item = Math.floor(item / 3);
+function inspectItem(monkey, itemValue) {
+    let item = Math.floor(operate(monkey.operation, itemValue) / 3);
     if ((item % monkey.isDivisibleBy) === 0) {
         monkeys[monkey.isTrueMonkey].items.push(item);
-        // console.log('true monkey', monkeys[monkey.isTrueMonkey]);
     } else {
         monkeys[monkey.isFalseMonkey].items.push(item);
-        // console.log('false monkey', monkeys[monkey.isFalseMonkey]);
     }
-    monkey.items.splice(itemIndex, 1);
 }
 
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 20; i++) { //i < 20
     for (let j = 0; j < monkeys.length; j++) {
-        console.log(monkeys[j].items)
         for (let t = 0; t < monkeys[j].items.length; t++) {
-            console.log('what', t, monkeys[j].items, monkeys[j].items.length)
-            //they're only inspecting the first item?
             monkeys[j].itemsInspected++;
-            inspectItem(monkeys[j], t);
+            inspectItem(monkeys[j], monkeys[j].items[t]);
         }
-        console.log('monkey ', j, ' done')
+        monkeys[j].items = []; //monkey will always throw away all his items midround but i don't want to change the list while going through it
     }
-    console.log('round ',i,' done')
 }
 
 monkeys.sort((m1, m2) => m2.itemsInspected - m1.itemsInspected);
-
+// console.log(monkeys);
 console.log(monkeys[0].itemsInspected * monkeys[1].itemsInspected)
