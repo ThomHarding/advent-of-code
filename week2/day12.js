@@ -12,6 +12,7 @@ let file = syncReadFile('./day12.txt');
 let map = [];
 let startingPosition = {};
 let endingPosition = {};
+let starts = [];
 
 for (let y = 0; y < file.length; y++) {
     let row = [];
@@ -28,10 +29,15 @@ for (let y = 0; y < file.length; y++) {
             endingPosition = {x,y};
             letterHeight = 'z'.charCodeAt();
         }
+        if (file[y][x] === 'a') {
+            //mark possible starts for part 2
+            starts.push({ x, y });
+        }
         row.push(letterHeight);
     }
     map.push(row);
 }
+starts.push(startingPosition);
 const toId = (x, y) => `${x},${y}`;
 
 function getNeighbors(x, y) {
@@ -69,7 +75,6 @@ function buildFrontier(startingX, startingY) {
             }
             const currentId = toId(current.x, current.y);
             frontier.push(next);
-            console.log(frontier);
             //if we move there, add it to the list of places we've been to on the path and set its key to our current position
             came_from.set(nextId, currentId);
         }
@@ -101,4 +106,17 @@ function getShortestPath(startingX, startingY, endingX, endingY) {
 }
 
 const path = getShortestPath(startingPosition.x, startingPosition.y, endingPosition.x, endingPosition.y);
-console.log(path.length);
+console.log('part 1: ', path.length);
+
+let min_path_length = 999;
+//part 2 we just repeat part 1 but for every location that is at minimum elevation
+//and find the minimum of the results
+for (let start of starts) {
+    const path = getShortestPath(start.x, start.y, endingPosition.x, endingPosition.y);
+    if (path.length && path.length !== 1) {
+        //some starting points can't actually reach the end. those paths return as a length of 1 and we disregard those
+        min_path_length = Math.min(min_path_length, path.length);
+    }
+}
+
+console.log('part 2: ', min_path_length);
